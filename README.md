@@ -1,2 +1,2 @@
 # StackUnderflow
-Stackoverflow-like web application.
+StackOverflow-like web application.
