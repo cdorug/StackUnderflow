@@ -1,7 +1,6 @@
 package com.assignment.backend.service;
 
 import com.assignment.backend.entity.Answer;
-import com.assignment.backend.entity.Question;
 import com.assignment.backend.repo.AnswerRepository;
 import com.assignment.backend.repo.QuestionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class AnswerService {
@@ -30,5 +30,12 @@ public class AnswerService {
 
     public Answer saveAnswer(Answer answer) {
         return answerRepository.save(answer);
+    }
+
+    public List<Answer> retrieveAnswerOfQuestion(Long searchedQuestionId) {
+        List<Answer> answersOfQuestion = (List<Answer>) answerRepository.findAll();
+        answersOfQuestion = answersOfQuestion.stream().filter(answer -> answer.getQuestionId()
+                            .equals(searchedQuestionId)).collect(Collectors.toList());
+        return answersOfQuestion;
     }
 }

@@ -54,6 +54,11 @@ public class AnswerController {
         }
     }
 
+    @GetMapping("/getAnswersByQuestionId/{id}")
+    public ResponseEntity<List<Answer>> getAnswersOfQuestion(@PathVariable("id") Long id) {
+        return new ResponseEntity<>(answerService.retrieveAnswerOfQuestion(id), HttpStatus.OK);
+    }
+
     @DeleteMapping("/deleteAnswerById/{id}")
     public void deleteAnswerById(@PathVariable("id") Long id) {
         answerService.deleteAnswerById(id);
