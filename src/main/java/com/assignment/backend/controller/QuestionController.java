@@ -60,20 +60,7 @@ public class QuestionController {
 
     @GetMapping("/getAllQuestionsSortedDate")
     public ResponseEntity<List<Question>> getQuestionsSortedDate() {
-        List<Question> sortedQuestions = questionService.retrieveQuestions();
-        Collections.sort(sortedQuestions, new Comparator() {
-            public int compare(Object o1, Object o2) {
-                Date d1 = ((Question) o1).getDate();
-                Date d2 = ((Question) o2).getDate();
-                int comp = d2.compareTo(d1);
-                if(comp != 0) {
-                    return comp;
-                }
-                Time t1 = ((Question) o1).getTime();
-                Time t2 = ((Question) o2).getTime();
-                return t2.compareTo(t1);
-            }
-        });
+        List<Question> sortedQuestions = questionService.retrieveQuestionsSortedDate();
         return new ResponseEntity<>(sortedQuestions, HttpStatus.OK);
     }
 
