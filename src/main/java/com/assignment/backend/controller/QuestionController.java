@@ -110,6 +110,7 @@ public class QuestionController {
         Optional<Question> oldQuestion = questionService.retrieveQuestionById(id);
         if(oldQuestion.isPresent()) {
             updatedQuestion.setAnswers(oldQuestion.get().getAnswers());
+            updatedQuestion.setVoteReferences(oldQuestion.get().getVoteReferences());
             questionService.saveQuestion(updatedQuestion);
             return new ResponseEntity<>(updatedQuestion, HttpStatus.OK);
         }

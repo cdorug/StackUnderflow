@@ -36,6 +36,7 @@ public class AnswerController {
     public ResponseEntity<Answer> updateAnswer(@RequestBody Answer updatedAnswer, @PathVariable("id") Long id) throws ServerException {
         Optional<Answer> oldAnswer = answerService.retrieveAnswerById(id);
         if(oldAnswer.isPresent()) {
+            updatedAnswer.setVoteReferences(oldAnswer.get().getVoteReferences());
             answerService.saveAnswer(updatedAnswer);
             return new ResponseEntity<>(updatedAnswer, HttpStatus.OK);
         }
