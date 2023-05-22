@@ -1,59 +1,52 @@
-package com.assignment.backend.entity;
+package com.assignment.backend.DTO;
 
-import com.fasterxml.jackson.annotation.*;
-import jakarta.persistence.*;
-
+import com.assignment.backend.entity.Answer;
+import com.assignment.backend.entity.Question;
+import com.assignment.backend.entity.User;
 import java.util.Set;
 
-@Entity
-@Table(name = "users")
-public class User {
+public class UserDTO {
 
-    @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    @Column(name="user_id")
     private Long userId;
-
-    @Column(name="username")
     private String username;
-
-    @Column(name = "l_name")
     private String lastName;
-
-    @Column(name = "f_name")
     private String firstName;
-
-    @Column(name = "e_mail")
     private String email;
-
-    @Column(name = "pword")
-    private String password;
-
-    @Column(name="profile_img")
     private String profilePicture;
-
-    @Column(name="score")
     private float score;
-
-    @Column(name="location")
     private String location;
-
-    @Column(name="user_type")
-    private String role;
-
-    @OneToMany(mappedBy="author")
-    @JsonIgnore
     private Set<Question> questions;
-
-    @OneToMany(mappedBy="author")
-    @JsonIgnore
     private Set<Answer> answers;
 
-    @OneToMany(mappedBy="user")
-    @JsonIgnore
-    private Set<Vote> voteReferences;
+    public UserDTO() {
+    }
 
-    public User() {}
+    public UserDTO(Long userId, String username, String lastName, String firstName, String email, String profilePicture,
+                   Long score, String location, Set<Question> questions, Set<Answer> answers) {
+        this.userId = userId;
+        this.username = username;
+        this.lastName = lastName;
+        this.firstName = firstName;
+        this.email = email;
+        this.profilePicture = profilePicture;
+        this.score = score;
+        this.location = location;
+        this.questions = questions;
+        this.answers = answers;
+    }
+
+    public UserDTO(User user) {
+        this.userId = user.getUserId();
+        this.username = user.getUsername();
+        this.lastName = user.getLastName();
+        this.firstName = user.getFirstName();
+        this.email = user.getEmail();
+        this.profilePicture = user.getProfilePicture();
+        this.score = user.getScore();
+        this.location = user.getLocation();
+        this.questions = user.getQuestions();
+        this.answers = user.getAnswers();
+    }
 
     public Long getUserId() {
         return userId;
@@ -95,14 +88,6 @@ public class User {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public String getProfilePicture() {
         return profilePicture;
     }
@@ -115,7 +100,7 @@ public class User {
         return score;
     }
 
-    public void setScore(float score) {
+    public void setScore(Long score) {
         this.score = score;
     }
 
@@ -141,21 +126,5 @@ public class User {
 
     public void setAnswers(Set<Answer> answers) {
         this.answers = answers;
-    }
-
-    public Set<Vote> getVoteReferences() {
-        return voteReferences;
-    }
-
-    public void setVoteReferences(Set<Vote> voteReferences) {
-        this.voteReferences = voteReferences;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
     }
 }

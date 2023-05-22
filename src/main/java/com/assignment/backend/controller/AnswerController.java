@@ -1,6 +1,7 @@
 package com.assignment.backend.controller;
 
 import com.assignment.backend.entity.Answer;
+import com.assignment.backend.entity.Question;
 import com.assignment.backend.service.AnswerService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +11,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.rmi.ServerException;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/stackoverflow/answers")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class AnswerController {
 
     @Autowired

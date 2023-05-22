@@ -1,6 +1,7 @@
 package com.assignment.backend.service;
 
 import com.assignment.backend.entity.Answer;
+import com.assignment.backend.entity.Question;
 import com.assignment.backend.repo.AnswerRepository;
 import com.assignment.backend.repo.QuestionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,8 +35,20 @@ public class AnswerService {
 
     public List<Answer> retrieveAnswerOfQuestion(Long searchedQuestionId) {
         List<Answer> answersOfQuestion = (List<Answer>) answerRepository.findAll();
-        answersOfQuestion = answersOfQuestion.stream().filter(answer -> answer.getQuestionId()
+        answersOfQuestion = answersOfQuestion.stream().filter(answer -> answer.getQuestion().getQuestionId()
                             .equals(searchedQuestionId)).collect(Collectors.toList());
         return answersOfQuestion;
+    }
+
+    public Answer updateVotes(Long answerId, Long votes) {
+        Optional<Answer> answer = answerRepository.findById(answerId);
+        if(answer.isPresent()) {
+            Answer updatedAnswer = answer.get();
+            updatedAnswer.setVotes(votes);
+            return answerRepository.save(updatedAnswer);
+        } else {
+            System.out.println("Can't update votes, answer doesn't exist!");
+            return null;
+        }
     }
 }

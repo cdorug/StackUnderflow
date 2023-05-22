@@ -1,26 +1,28 @@
 package com.assignment.backend.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.util.Set;
 
 @Entity
 @Table(name = "answers")
 public class Answer {
 
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "answer_id")
     private Long answerId;
 
-    @Column(name = "author_id")
-    private Long authorId;
+    @ManyToOne
+    @JoinColumn(name="author_id", nullable=false)
+    private User author;
 
-    @Column(name = "question_id")
-    private Long questionId;
+    @ManyToOne
+    @JoinColumn(name="question_id", nullable = false)
+    private Question question;
 
     @Column(name = "answer_text")
     private String text;
@@ -31,8 +33,19 @@ public class Answer {
     @Column(name = "creation_time")
     private Time time;
 
+    @Column
+    private Long votes;
+
     @Column(name = "image_URL")
     private String imageURL;
+
+    @OneToMany(
+            mappedBy = "answer",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    @JsonIgnore
+    private Set<Vote> voteReferences;
 
     public Answer() {}
 
@@ -42,22 +55,6 @@ public class Answer {
 
     public void setAnswerId(Long answerId) {
         this.answerId = answerId;
-    }
-
-    public Long getAuthorId() {
-        return authorId;
-    }
-
-    public void setAuthorId(Long authorId) {
-        this.authorId = authorId;
-    }
-
-    public Long getQuestionId() {
-        return questionId;
-    }
-
-    public void setQuestionId(Long questionId) {
-        this.questionId = questionId;
     }
 
     public String getText() {
@@ -90,5 +87,37 @@ public class Answer {
 
     public void setImageURL(String imageURL) {
         this.imageURL = imageURL;
+    }
+
+    public User getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(User author) {
+        this.author = author;
+    }
+
+    public Long getVotes() {
+        return votes;
+    }
+
+    public void setVotes(Long votes) {
+        this.votes = votes;
+    }
+
+    public Question getQuestion() {
+        return question;
+    }
+
+    public void setQuestion(Question question) {
+        this.question = question;
+    }
+
+    public Set<Vote> getVoteReferences() {
+        return voteReferences;
+    }
+
+    public void setVoteReferences(Set<Vote> voteReferences) {
+        this.voteReferences = voteReferences;
     }
 }

@@ -1,7 +1,12 @@
 package com.assignment.backend.service;
 
 import com.assignment.backend.entity.Question;
+import com.assignment.backend.entity.Tag;
+import com.assignment.backend.entity.Vote;
 import com.assignment.backend.repo.QuestionRepository;
+import com.assignment.backend.repo.TagRepository;
+import com.assignment.backend.repo.VoteRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +22,12 @@ public class QuestionService {
 
     @Autowired
     QuestionRepository questionRepository;
+
+    @Autowired
+    TagRepository tagRepository;
+
+    @Autowired
+    VoteRepository voteRepository;
 
     public List<Question> retrieveQuestions() {return (List<Question>) questionRepository.findAll();}
 
@@ -50,4 +61,21 @@ public class QuestionService {
         return questionRepository.save(question);
     }
 
+    public Tag saveTag(Tag tag) { return tagRepository.save(tag); }
+
+    public Optional<Tag> retrieveTagByTagText(String tagText) { return tagRepository.findByTagText(tagText); }
+
+    public Vote saveVote(Vote vote) { return voteRepository.save(vote); }
+
+    public Question updateVotes(Long questionId, Long votes) {
+        Optional<Question> question = questionRepository.findById(questionId);
+        if(question.isPresent()) {
+            Question updatedQuestion = question.get();
+            updatedQuestion.setVotes(votes);
+            return questionRepository.save(updatedQuestion);
+        } else {
+            System.out.println("Can't update votes, question doesn't exist!");
+            return null;
+        }
+    }
 }
